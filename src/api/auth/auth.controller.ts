@@ -53,6 +53,59 @@ class AuthController
             });
         }
     }
+
+    public register = async (req: any, res: any) => {
+        try
+        {
+            const { username, password, name, address, contact } = req.body;
+            const userAvailable = await prisma.user.findUnique({
+                where: {
+                    username
+                }
+            });
+            if (userAvailable) {
+                return res.status(400).json({
+                    success: false,
+                    message: "Username already taken"
+                });
+            }
+            else
+            {
+                let hashedPassword = await hash(password, 12);
+                const newUser = await prisma.user.create({
+                    data: {
+                        username,
+                        password: hashedPassword,
+                        name,
+                        address,
+                        contact
+                    }
+                });
+                if(newUser)
+                {
+                    return res.status(201).json({
+                        success: true,
+                        message: "User created",
+                        data: newUser
+                    });
+                }
+                else
+                {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Failed to create user"
+                    });
+                }
+            }
+        }
+        catch (err)
+        {
+            return res.status(500).json({
+                success: false,
+                message: err.message
+            });
+        }
+    }
 }
 
 export default AuthController;

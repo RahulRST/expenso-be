@@ -13,7 +13,7 @@ model User {
   password     String
   name         String
   address      String
-  contactInfo  String
+  contact      String
   Budget       Budget[]
   Expense      Expense[]
   Income       Income[]
