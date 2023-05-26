@@ -1,33 +1,56 @@
 import prisma from "../../helpers/prismaClient";
+import { compare, hash } from "bcryptjs";
+import { sign } from "jsonwebtoken";
 
 class AuthController
 {
-    public login = async (req: any, res: any, next: any) => {
-        const { username, password } = req.body;
-        const userAvailable = await prisma.user.findUnique({
-            where: {
-                username
-            }
-        });
-        if (!userAvailable) {
-            return res.status(404).json({
-                message: "Username not found"
-            });
-        }
-        else
+    public login = async (req: any, res: any) => {
+        try
         {
-            if(userAvailable.password === password)
-            {
-                return res.status(200).json({
-                    message: "Login success"
+            const { username, password } = req.body;
+            const userAvailable = await prisma.user.findUnique({
+                where: {
+                    username
+                }
+            });
+            if (!userAvailable) {
+                return res.status(404).json({
+                    success: false,
+                    message: "Username not found"
                 });
             }
             else
             {
-                return res.status(400).json({
-                    message: "Wrong password"
-                });
+                let passMatch = await compare(password, userAvailable.password)
+                if(passMatch)
+                {
+                let payload = {
+                        id: userAvailable.id,
+                        username: userAvailable.username
+                }
+                let token = sign({ payload }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+                return res.status(200).json({
+                        success: true,
+                        message: "Login success",
+                        token
+                    });
+                }  
+                else
+                {
+                    return res.status(400).json({
+                        success: false,
+                        message: "Wrong password"
+                    });
+                }
             }
+        }
+        catch (err)
+        {
+            return res.status(500).json({
+                success: false,
+                message: err.message
+            });
         }
     }
 }
