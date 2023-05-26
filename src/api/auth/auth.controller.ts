@@ -83,7 +83,7 @@ class AuthController
                 });
                 if(newUser)
                 {
-                    return res.status(201).json({
+                    return res.status(200).json({
                         success: true,
                         message: "User created",
                         data: newUser
