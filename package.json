@@ -6,6 +6,7 @@
   "scripts": {
     "build": "npx prisma generate && tsc",
     "start": "nodemon ./dist/index.js",
+    "init": "npx prisma generate && npx ts-node -- ./data/init.ts",
     "dev": "npx prisma generate && nodemon --exec npx ts-node -- ./src/index.ts",
     "prod": "npm run build && npm run start",
     "clean": "rm -rf node_modules coverage dist .nyc_output"
