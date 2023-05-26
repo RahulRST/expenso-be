@@ -5,6 +5,7 @@ import helmet from "helmet";
 import * as morgan from "morgan";
 import * as errorHandler from "./helpers/errorHandler";
 import home from "./home";
+import api from "./api";
 
 class App {
   public express: express.Application;
@@ -28,6 +29,7 @@ class App {
 
   private setRoutes(): void {
     this.express.use("/", home);
+    this.express.use("/api", api)
   }
 
   private catchErrors(): void {
