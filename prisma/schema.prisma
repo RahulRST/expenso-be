@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  username     String         @unique
+  password     String
+  name         String
+  address      String
+  contactInfo  String
+  Expense      Expense[]
+  Budget       Budget[]
+  Payment      Payment[]
+  Income       Income[]
+  Notification Notification[]
+}
+
+model Expense {
+  id     Int      @id @default(autoincrement())
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int
+  amount Float
+  date   DateTime
+
+  category          ExpenseCategory @relation(fields: [expenseCategoryId], references: [id])
+  description       String?
+  expenseCategoryId Int
+}
+
+model ExpenseCategory {
+  id      Int       @id @default(autoincrement())
+  name    String
+  Expense Expense[]
+  Budget  Budget[]
+}
+
+model Budget {
+  id     Int   @id @default(autoincrement())
+  user   User  @relation(fields: [userId], references: [id])
+  userId Int
+  amount Float
+
+  category          ExpenseCategory @relation(fields: [expenseCategoryId], references: [id])
+  expenseCategoryId Int
+}
+
+model Payment {
+  id     Int      @id @default(autoincrement())
+  user   User     @relation(fields: [userId], references: [id])
+  userId Int
+  amount Float
+  date   DateTime
+
+  description String?
+}
+
+model Income {
+  id     Int   @id @default(autoincrement())
+  user   User  @relation(fields: [userId], references: [id])
+  userId Int
+  amount Float
+
+  source         IncomeSource @relation(fields: [incomeSourceId], references: [id])
+  date           DateTime
+  incomeSourceId Int
+}
+
+model IncomeSource {
+  id     Int      @id @default(autoincrement())
+  name   String
+  Income Income[]
+}
+
+model Notification {
+  id      Int      @id @default(autoincrement())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  Int
+  message String
+  date    DateTime
+}
