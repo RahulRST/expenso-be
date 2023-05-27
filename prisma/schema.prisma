@@ -70,6 +70,7 @@ model Income {
   userId         String
   amount         Float
   date           DateTime
+  description    String?
   incomeSourceId String
   source         IncomeSource @relation(fields: [incomeSourceId], references: [id])
   user           User         @relation(fields: [userId], references: [id])
