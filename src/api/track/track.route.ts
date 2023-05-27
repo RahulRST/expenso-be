@@ -6,5 +6,6 @@ const trackController = new TrackController();
 
 track.post("/addexpense", trackController.addExpense);
 track.post("/addincome", trackController.addIncome);
+track.post("/addnotification", trackController.addNotification);
 
 export default track;

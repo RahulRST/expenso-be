@@ -114,6 +114,44 @@ class TrackController
             });
         }
     }
+
+    public addNotification = async (req: Request, res: Response) =>
+    {
+        try{
+            const { message, date } = req.body;
+            const user = res.locals.user;
+            const notification = await prisma.notification.create({
+                data: {
+                    message,
+                    date,
+                    userId: user.id
+                }
+            });
+            if(notification)
+            {
+                return res.status(200).json({
+                    success: true,
+                    message: "Notification added successfully",
+                    notification
+                });
+            }
+            else
+            {
+                return res.status(500).json({
+                    success: false,
+                    message: "Unable to add notification"
+                });
+            }
+        }
+        catch(err)
+        {
+            return res.status(500).json({
+                success: false,
+                message: "Unable to add notification",
+                error: err
+            });
+        }
+    }
 }
 
 export default TrackController;
