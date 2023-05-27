@@ -24,17 +24,17 @@ class AuthController
                 let passMatch = await compare(password, userAvailable.password)
                 if(passMatch)
                 {
-                let payload = {
-                        id: userAvailable.id,
-                        username: userAvailable.username
-                }
-                let token = sign({ payload }, process.env.JWT_SECRET, { expiresIn: "1h" });
+                    let payload = {
+                            id: userAvailable.id,
+                            username: userAvailable.username
+                    }
+                    let token = sign({ payload }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-                return res.status(200).json({
-                        success: true,
-                        message: "Login success",
-                        token
-                    });
+                    return res.status(200).json({
+                            success: true,
+                            message: "Login success",
+                            token
+                        });
                 }  
                 else
                 {
