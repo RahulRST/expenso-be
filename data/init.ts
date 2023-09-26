@@ -4,7 +4,7 @@ import prisma from "../src/helpers/prismaClient"
 const Initializer = {
     init() {
         Expense.forEach(async (item) => {
-            const expense = await prisma.expenseCategory.create({
+            await prisma.expenseCategory.create({
                 data: {
                     name: item
                 }
@@ -12,8 +12,8 @@ const Initializer = {
         })
 
         Income.forEach(async (item) => {
-            const income = await prisma.incomeSource.create({
-                data: {
+            await prisma.incomeSource.create({
+                data: { 
                     name: item
                 }
             })
