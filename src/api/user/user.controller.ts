@@ -10,7 +10,7 @@ class UserController {
           id,
         },
         select: {
-          id: true,
+          // id: true,
           username: true,
           name: true,
           address: true,
