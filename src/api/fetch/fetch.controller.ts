@@ -10,6 +10,11 @@ class FetchController
             const notifications = await prisma.notification.findMany({
                 where: {
                     userId: user.id
+                },
+                select: {
+                    id: true,
+                    message: true,
+                    date: true
                 }
             });
             if(notifications)
@@ -17,7 +22,7 @@ class FetchController
                 return res.status(200).json({
                     success: true,
                     message: "Notifications fetched successfully",
-                    notifications
+                    data: notifications
                 });
             }
             else
