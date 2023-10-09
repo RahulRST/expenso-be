@@ -119,11 +119,12 @@ class TrackController
     {
         try{
             const { message, date } = req.body;
+            console.log(req.body);
             const user = res.locals.user;
             const notification = await prisma.notification.create({
                 data: {
                     message,
-                    date,
+                    date: new Date(date),
                     userId: user.id
                 }
             });
@@ -145,6 +146,7 @@ class TrackController
         }
         catch(err)
         {
+            console.log(err);
             return res.status(500).json({
                 success: false,
                 message: "Unable to add notification",
