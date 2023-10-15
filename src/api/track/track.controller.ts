@@ -24,7 +24,7 @@ class TrackController
                 if(newExpenseCat) {
                     const expense = await prisma.expense.create({
                         data: {
-                            amount,
+                            amount: parseFloat(amount),
                             description,
                             date: new Date(date),
                             userId: user.id,
@@ -59,7 +59,7 @@ class TrackController
             {
                 const expense = await prisma.expense.create({
                     data: {
-                        amount,
+                        amount: parseFloat(amount),
                         description,
                         date: new Date(date),
                         userId: user.id,
@@ -114,7 +114,7 @@ class TrackController
                 if(newIncomeSource) {
                     const income = await prisma.income.create({
                         data: {
-                            amount,
+                            amount: parseFloat(amount),
                             description,
                             date: new Date(date),
                             userId: user.id,
@@ -149,7 +149,7 @@ class TrackController
             {
                 const income = await prisma.income.create({
                     data: {
-                        amount,
+                        amount: parseFloat(amount),
                         description,
                         date: new Date(date),
                         userId: user.id,
