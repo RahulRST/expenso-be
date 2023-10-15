@@ -16,10 +16,44 @@ class TrackController
             });
             if(!expenseCat)
             {
-                return res.status(400).json({
-                    success: false,
-                    message: "Invalid category"
+                const newExpenseCat = await prisma.expenseCategory.create({
+                    data: {
+                        name: category
+                    }
                 });
+                if(newExpenseCat) {
+                    const expense = await prisma.expense.create({
+                        data: {
+                            amount,
+                            description,
+                            date: new Date(date),
+                            userId: user.id,
+                            expenseCategoryId: newExpenseCat.id
+                        }
+                    });
+                    if(expense)
+                    {
+                        return res.status(201).json({
+                            success: true,
+                            message: "Expense added successfully",
+                            expense
+                        });
+                    }
+                    else
+                    {
+                        return res.status(500).json({
+                            success: false,
+                            message: "Unable to add expense"
+                        });
+                    }
+                }
+                else
+                {
+                    return res.status(500).json({
+                        success: false,
+                        message: "Unable to add expense category"
+                    });
+                }
             }
             else
             {
@@ -72,10 +106,44 @@ class TrackController
             });
             if(!incomeSource)
             {
-                return res.status(400).json({
-                    success: false,
-                    message: "Invalid source"
+                const newIncomeSource = await prisma.incomeSource.create({
+                    data: {
+                        name: source
+                    }
                 });
+                if(newIncomeSource) {
+                    const income = await prisma.income.create({
+                        data: {
+                            amount,
+                            description,
+                            date: new Date(date),
+                            userId: user.id,
+                            incomeSourceId: newIncomeSource.id
+                        }
+                    });
+                    if(income)
+                    {
+                        return res.status(201).json({
+                            success: true,
+                            message: "Income added successfully",
+                            income
+                        });
+                    }
+                    else
+                    {
+                        return res.status(500).json({
+                            success: false,
+                            message: "Unable to add income"
+                        });
+                    }
+                }
+                else
+                {
+                    return res.status(500).json({
+                        success: false,
+                        message: "Unable to add income source"
+                    });
+                }
             }
             else
             {
