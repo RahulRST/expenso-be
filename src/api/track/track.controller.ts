@@ -27,7 +27,7 @@ class TrackController
                     data: {
                         amount,
                         description,
-                        date,
+                        date: new Date(date),
                         userId: user.id,
                         expenseCategoryId: expenseCat.id
                     }
@@ -83,7 +83,7 @@ class TrackController
                     data: {
                         amount,
                         description,
-                        date,
+                        date: new Date(date),
                         userId: user.id,
                         incomeSourceId: incomeSource.id
                     }
